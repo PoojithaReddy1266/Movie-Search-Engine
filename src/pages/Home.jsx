@@ -27,7 +27,12 @@ function Home() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return
+    
+    if (searchQuery.trim().length < 3) {
+      setError("Please enter at least 3 characters");
+      return;
+    }
+
     if (loading) return
 
     setLoading(true)
