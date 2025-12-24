@@ -12,6 +12,7 @@
   gap: 1rem;
   padding: 0 1rem;
   box-sizing: border-box;
+  width: 100%; 
 }
 
 .search-input {
@@ -22,6 +23,7 @@
   background-color: #333;
   color: white;
   font-size: 1rem;
+  min-width: 0;
 }
 
 .search-input:focus {
