@@ -26,36 +26,38 @@ function Home() {
   }, []);
 
   const handleSearch = async (e) => {
-    e.preventDefault();
-    
-    const query = searchQuery.trim();
+  e.preventDefault();
+  
+  const query = searchQuery.trim();
 
-    if (query.length < 3) {
-      setError("Please enter at least 3 characters");
+  if (query.length < 3) {
+    setError("Please enter at least 3 characters");
+    setMovies([]); 
+    setLoading(false); 
+    return;
+  }
+
+  setError(null);
+  setLoading(true);
+
+  try {
+    const searchResults = await searchMovies(query);
+    if (searchResults.length === 0) {
+      setError("No movies found");
       setMovies([]);
-      return;
+    } else {
+      setMovies(searchResults);
+      setError(null);
     }
+  } catch (err) {
+    console.log(err);
+    setError("Failed to search movies...");
+    setMovies([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
-    setError(null);
-    setLoading(true);
-
-    try {
-        const searchResults = await searchMovies(query);
-        if (searchResults.length === 0) {
-          setError("No movies found");
-          setMovies([]);
-        } else {
-          setMovies(searchResults);
-          setError(null);
-        }
-    } catch (err) {
-        console.log(err);
-        setError("Failed to search movies...");
-        setMovies([]);
-    } finally {
-        setLoading(false);
-    }
-  };
 
   return (
     <div className="home">
