@@ -33,8 +33,16 @@
   line-height: 1.6;
 }
 
+.movies-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
 
-/* Animation for new favorites being added */
+.movies-grid > * {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -46,6 +54,38 @@
   }
 }
 
-.movies-grid > * {
-  animation: fadeIn 0.3s ease-out forwards;
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+  .favorites h2 {
+    font-size: 2rem;
+  }
+
+  .favorites-empty {
+    padding: 3rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .movies-grid {
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites h2 {
+    font-size: 1.6rem;
+  }
+
+  .favorites-empty h2 {
+    font-size: 1.5rem;
+  }
+
+  .favorites-empty p {
+    font-size: 1rem;
+  }
+
+  .movies-grid {
+    gap: 0.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
 }
