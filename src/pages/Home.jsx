@@ -28,23 +28,32 @@ function Home() {
   const handleSearch = async (e) => {
     e.preventDefault();
     
-    if (searchQuery.trim().length < 3) {
+    const query = searchQuery.trim();
+
+    if (query.length < 3) {
       setError("Please enter at least 3 characters");
+      setMovies([]);
       return;
     }
 
-    if (loading) return
+    setError(null);
+    setLoading(true);
 
-    setLoading(true)
     try {
-        const searchResults = await searchMovies(searchQuery)
-        setMovies(searchResults)
-        setError(null)
+        const searchResults = await searchMovies(query);
+        if (searchResults.length === 0) {
+          setError("No movies found");
+          setMovies([]);
+        } else {
+          setMovies(searchResults);
+          setError(null);
+        }
     } catch (err) {
-        console.log(err)
-        setError("Failed to search movies...")
+        console.log(err);
+        setError("Failed to search movies...");
+        setMovies([]);
     } finally {
-        setLoading(false)
+        setLoading(false);
     }
   };
 
@@ -63,7 +72,13 @@ function Home() {
         </button>
       </form>
 
-        {error && <div className="error-message">{error}</div>}
+      {searchQuery.trim().length > 0 && searchQuery.trim().length < 3 && (
+        <div className="error-message">Please enter at least 3 characters</div>
+      )}
+
+      {error && searchQuery.trim().length >= 3 && (
+        <div className="error-message">{error}</div>
+      )}
 
       {loading ? (
         <div className="loading">Loading...</div>
