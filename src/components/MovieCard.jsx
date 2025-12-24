@@ -1,15 +1,14 @@
-import "../css/MovieCard.css"
-import { useMovieContext } from "../contexts/MovieContext"
+import "../css/MovieCard.css";
+import { useMovieContext } from "../contexts/MovieContext";
 
 function MovieCard({ movie }) {
-  const { isFavorite, addToFavorites, removeFromFavorites } = useMovieContext()
-
-  const favorite = isFavorite(movie.imdbID)
+  const { favorites, addFavorite, removeFavorite } = useMovieContext();
+  const favorite = favorites.some((m) => m.imdbID === movie.imdbID);
 
   function onFavoriteClick(e) {
-    e.preventDefault()
-    if (favorite) removeFromFavorites(movie.imdbID)
-    else addToFavorites(movie)
+    e.preventDefault();
+    if (favorite) removeFavorite(movie.imdbID);
+    else addFavorite(movie);
   }
 
   return (
@@ -31,7 +30,7 @@ function MovieCard({ movie }) {
         <p>{movie.Year}</p>
       </div>
     </div>
-  )
+  );
 }
 
-export default MovieCard
+export default MovieCard;

@@ -1,36 +1,28 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { useMovieContext } from "../contexts/MovieContext";
+import MovieCard from "../components/MovieCard";
+import "../css/Favorites.css";
 
-const MovieContext = createContext();
+function Favorites() {
+  const { favorites } = useMovieContext();
 
-export const MovieProvider = ({ children }) => {
-  const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem("favorites");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
-
-  const addFavorite = (movie) => {
-    setFavorites((prev) => {
-      if (!prev.find((m) => m.imdbID === movie.imdbID)) {
-        return [...prev, movie];
-      }
-      return prev;
-    });
-  };
-
-  const removeFavorite = (movieId) => {
-    setFavorites((prev) => prev.filter((m) => m.imdbID !== movieId));
-  };
+  if (!favorites || favorites.length === 0) {
+    return (
+      <div className="favorites">
+        <h2>No favorite movies yet.</h2>
+      </div>
+    );
+  }
 
   return (
-    <MovieContext.Provider value={{ favorites, addFavorite, removeFavorite }}>
-      {children}
-    </MovieContext.Provider>
+    <div className="favorites">
+      <h2>Your Favorites</h2>
+      <div className="movies-grid">
+        {favorites.map((movie) => (
+          <MovieCard movie={movie} key={movie.imdbID} />
+        ))}
+      </div>
+    </div>
   );
-};
+}
 
-export const useMovieContext = () => useContext(MovieContext);
 export default Favorites;
