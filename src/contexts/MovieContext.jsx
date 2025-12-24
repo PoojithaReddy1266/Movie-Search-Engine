@@ -12,7 +12,7 @@ export const MovieProvider = ({ children }) => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  const addToFavorites = (movie) => {
+  const addFavorite = (movie) => {
     setFavorites((prev) => {
       if (!prev.find((m) => m.imdbID === movie.imdbID)) {
         return [...prev, movie];
@@ -21,18 +21,12 @@ export const MovieProvider = ({ children }) => {
     });
   };
 
-  const removeFromFavorites = (movieId) => {
+  const removeFavorite = (movieId) => {
     setFavorites((prev) => prev.filter((m) => m.imdbID !== movieId));
   };
 
-  const isFavorite = (movieId) => {
-    return favorites.some((m) => m.imdbID === movieId);
-  };
-
   return (
-    <MovieContext.Provider
-      value={{ favorites, addToFavorites, removeFromFavorites, isFavorite }}
-    >
+    <MovieContext.Provider value={{ favorites, addFavorite, removeFavorite }}>
       {children}
     </MovieContext.Provider>
   );
